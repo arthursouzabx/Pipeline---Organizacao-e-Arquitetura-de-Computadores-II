@@ -1,0 +1,8 @@
+*.vcd
+*.log
+*.out
+*.o
+*.swp
+*~
+build/
+output/
