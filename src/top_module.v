@@ -14,9 +14,6 @@ module top_module;
         #250 $finish;
     end
 
-    // ========================================
-    // Sinais do Pipeline entre estágios
-    // ========================================
 
     // IF stage (Saídas)
     wire [63:0] if_pc;
@@ -43,7 +40,7 @@ module top_module;
     wire        id_ctrl_alu_src;
     wire        id_ctrl_branch;
 
-    // NOVOS: Sinais de controle após o MUX (podem ser NOPs)
+    //  Sinais de controle após o MUX (podem ser NOPs)
     wire        id_ctrl_reg_write_final;
     wire        id_ctrl_mem_to_reg_final;
     wire        id_ctrl_mem_read_final;
@@ -156,10 +153,10 @@ module top_module;
     );
     
     // ========================================
-    // Instâncias do pipeline (MODIFICADAS)
+    // Instâncias do pipeline 
     // ========================================
 
-    // Program Counter (MODIFICADO para aceitar pc_write)
+    // Program Counter 
     program_counter pc (
         .clk(clk),
         .reset(reset),
@@ -175,12 +172,12 @@ module top_module;
         .instruction(if_instruction)
     );
 
-    // IF/ID Register (MODIFICADO para aceitar if_id_write)
+    // IF/ID Register 
     if_id_register if_id (
         .clk(clk),
         .reset(reset),
-        .if_id_write(if_id_write),  // NOVO
-        .flush(ex_branch_taken),    // NOVO
+        .if_id_write(if_id_write),  
+        .flush(ex_branch_taken),    
         .pc_in(if_pc),
         .instruction_in(if_instruction),
         .pc_out(if_id_pc),
@@ -235,12 +232,11 @@ module top_module;
         .alu_op(id_ctrl_alu_op)
     );
 
-    // ID/EX Register (MODIFICADO para usar controles finais)
+    // ID/EX Register 
     id_ex_register id_ex (
         .clk(clk),
         .reset(reset),
 
-        // Inputs (vindos do ID Stage)
         .pc_in(if_id_pc),
         .rs1_data_in(id_rs1_data_from_rf),
         .rs2_data_in(id_rs2_data_from_rf),
@@ -297,7 +293,6 @@ module top_module;
         .branch_taken(ex_branch_taken) 
     );
 
-    // NOVO: precisa do rs2 com forwarding para store instructions
     wire [63:0] ex_forwarded_rs2_data;
     
     mux_forward_b store_forward_mux (
@@ -313,7 +308,7 @@ module top_module;
         .clk(clk),
         .reset(reset),
         .ex_alu_result(ex_alu_result),
-        .ex_rs2_data(ex_forwarded_rs2_data), // CORRIGIDO: usa valor com forwarding
+        .ex_rs2_data(ex_forwarded_rs2_data), 
         .ex_rd(id_ex_rd),
         .ex_mem_read(id_ex_mem_read),
         .ex_mem_write(id_ex_mem_write),

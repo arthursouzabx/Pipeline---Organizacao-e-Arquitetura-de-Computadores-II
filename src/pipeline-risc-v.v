@@ -98,12 +98,11 @@ module instruction_memory(
     input  [63:0] inst_address,
     output [31:0] instruction
 );
-    reg [31:0] memory [0:15]; // Reduzido de 20 para 15
+    reg [31:0] memory [0:15]; 
 
     assign instruction = memory[inst_address[5:2]];
 
     initial begin
-        // PROGRAMA OTIMIZADO SEM NOPs DESNECESSÁRIOS
         memory[0]  = 32'h00506093; // ori x1, x0, 5           (x1 = 5)
         memory[1]  = 32'h00100023; // sb  x1, 0(x0)          (MEM[0] = 5)
         memory[2]  = 32'h00000103; // lb  x2, 0(x0)          (x2 = MEM[0] = 5) ⚠️ HAZARD load-use detectado!
@@ -134,7 +133,7 @@ module if_id_register (
     output reg [31:0] instruction_out
 );
     always @(posedge clk or posedge reset) begin
-        if (reset || flush) begin  // MODIFICADO: reset OU flush
+        if (reset || flush) begin 
             pc_out <= 0;
             instruction_out <= 32'h00000013; // NOP instruction
         end else if (if_id_write) begin  
@@ -366,7 +365,6 @@ module register_file(
             regs[rd] <= write_data;
             $display("Time %0t: RegFile WRITE - x%0d = %0d (0x%h)", $realtime, rd, write_data, write_data);
             
-
             #0.1; // Pequeno delay para garantir que a escrita aconteceu
             $display("---------------------------------------------");
             $display("RegFile State: x1=%0d, x2=%0d, x3=%0d, x4=%0d, x5=%0d, x6=%0d, x7=%0d, x8=%0d, x9=%0d, x10=%0d, x11=%0d, x12=%0d", 
@@ -598,9 +596,9 @@ module hazard_detection_unit(
         // Detecta hazard load-use
         if (id_ex_mem_read && (id_ex_rd != 0) && 
             ((id_ex_rd == if_id_rs1) || (id_ex_rd == if_id_rs2))) begin
-            stall = 1'b1; // Precisa inserir stall
+            stall = 1'b1; 
         end else begin
-            stall = 1'b0; // Sem hazard
+            stall = 1'b0; 
         end
     end
 endmodule
