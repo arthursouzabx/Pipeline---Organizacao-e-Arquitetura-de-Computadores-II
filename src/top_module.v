@@ -1,4 +1,4 @@
-`include "pipeline-risc-v.v"
+`include "src/pipeline-risc-v.v"
 `timescale 1ns/100ps
 
 module top_module;

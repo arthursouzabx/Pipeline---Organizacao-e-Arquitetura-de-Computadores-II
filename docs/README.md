@@ -14,6 +14,6 @@ Este projeto implementa um processador RISC-V de 5 estágios com suporte a instr
 
 2. Com o Icarus Verilog instalado, execute no terminal do VS Code:
    ```bash
-   iverilog pipeline-risc-v.v
-   iverilog -o  top_module.vvp top_module.v
+   iverilog src/pipeline-risc-v.v
+   iverilog -o  top_module.vvp src/top_module.v
    vvp top_module.vvp
